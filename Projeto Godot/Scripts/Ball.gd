@@ -1,28 +1,52 @@
 extends CharacterBody2D
 
+const Start_speed = 500
+const ACCEL = 50
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var speed
+var dir
 
 
+func New_ball():
+	
+	global_position = get_viewport_rect().size / 2
+	speed = Start_speed
+	dir = Vector2(randi_range(-1 , 1) ,randf_range(-0.4 , 0.4) )
+	pass
+ 
+
+func _ready():
+	New_ball()
+	pass
+	
+	
 func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += gravity * delta
+	
+	var collision = move_and_collide(dir.normalized() * speed * delta)
+	var collider
+	
+	if collision:
+		
+		collider = collision.get_collider()
+	
+		if collider.is_in_group('Pad'):
+			speed += ACCEL
+			dir = dir.bounce(collision.get_normal())
+			dir.y = randf_range(0.6 , -0.6)
+		else:
+			dir = dir.bounce(collision.get_normal())
+	
+	pass
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-	move_and_slide()
+func _on_area_2d_area_entered(area):
+	
+	if area.name == 'AreaLeft':
+		$'../Score'.Player2Score +=1
+		New_ball()
+	
+	if area.name == 'AreaRight':
+		$'../Score'.Player1Score +=1
+		New_ball()
+	
+	
+	pass

@@ -1,28 +1,58 @@
-[gd_scene load_steps=6 format=3 uid="uid://bunjv557d8bfh"]
+[gd_scene load_steps=12 format=3 uid="uid://bunjv557d8bfh"]
 
 [ext_resource type="Script" path="res://Scripts/Player1.gd" id="1_xlh7m"]
+[ext_resource type="Texture2D" uid="uid://c7ba6f0bvmck6" path="res://Sprites/New Piskel-2.png (1).png" id="2_qut6e"]
 [ext_resource type="Script" path="res://Scripts/Player2.gd" id="2_vkwg5"]
 [ext_resource type="Script" path="res://Scripts/Ball.gd" id="3_btyv8"]
+[ext_resource type="Script" path="res://Scripts/Score.gd" id="4_uyur0"]
+[ext_resource type="Texture2D" uid="uid://p4un8hmgw5mo" path="res://Sprites/New Piskel-1.png.png" id="5_ixaod"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0d0al"]
+size = Vector2(965, 50)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5k08s"]
-radius = 6.0
-height = 78.0
+radius = 7.04636
+height = 14.0927
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qdg3w"]
-radius = 10.6301
+[sub_resource type="CircleShape2D" id="CircleShape2D_apoxo"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_palec"]
+radius = 9.05539
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7ih2"]
+size = Vector2(20, 546)
 
 [node name="Multi Player" type="Node2D"]
 
-[node name="Player1" type="StaticBody2D" parent="."]
-position = Vector2(35, 241)
+[node name="Wall" type="StaticBody2D" parent="."]
+position = Vector2(470, 252)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+position = Vector2(12.5, -277)
+shape = SubResource("RectangleShape2D_0d0al")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Wall"]
+position = Vector2(11, 313)
+shape = SubResource("RectangleShape2D_0d0al")
+
+[node name="Player1" type="StaticBody2D" parent="." groups=["Pad"]]
+position = Vector2(31, 270)
 script = ExtResource("1_xlh7m")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player1"]
-position = Vector2(0, -1)
+position = Vector2(-8, -2)
+scale = Vector2(0.16692, -1.49917)
 shape = SubResource("CapsuleShape2D_5k08s")
 
-[node name="Player2" type="StaticBody2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="Player1"]
+texture_filter = 1
+position = Vector2(3, -1)
+scale = Vector2(2.40625, 2.40625)
+texture = ExtResource("2_qut6e")
+
+[node name="Player2" type="StaticBody2D" parent="." groups=["Pad"]]
 position = Vector2(920, 253)
 script = ExtResource("2_vkwg5")
 metadata/_edit_group_ = true
@@ -36,5 +66,52 @@ position = Vector2(470, 252)
 script = ExtResource("3_btyv8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-shape = SubResource("CircleShape2D_qdg3w")
+shape = SubResource("CircleShape2D_apoxo")
+debug_color = Color(0, 0.560382, 0.885435, 0.42)
 metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="Ball"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball/Area2D"]
+shape = SubResource("CircleShape2D_palec")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Ball"]
+amount = 50
+gravity = Vector2(0, 0)
+scale_amount_max = 4.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+texture_filter = 1
+position = Vector2(-1.8164, -2.18359)
+scale = Vector2(1.57397, 1.57397)
+texture = ExtResource("5_ixaod")
+metadata/_edit_group_ = true
+
+[node name="Score" type="Node2D" parent="."]
+script = ExtResource("4_uyur0")
+
+[node name="Player1Score" type="Label" parent="Score"]
+offset_left = 86.0
+offset_top = 33.0
+offset_right = 197.0
+offset_bottom = 81.0
+text = "00000000"
+
+[node name="Player2Score" type="Label" parent="Score"]
+offset_left = 800.0
+offset_top = 32.0
+offset_right = 911.0
+offset_bottom = 80.0
+text = "00000000"
+
+[node name="AreaLeft" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaLeft"]
+position = Vector2(-8, 268)
+shape = SubResource("RectangleShape2D_p7ih2")
+
+[node name="AreaRight" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRight"]
+position = Vector2(968, 269)
+shape = SubResource("RectangleShape2D_p7ih2")
