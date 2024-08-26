@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfchmxbrmnxea"]
+
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_15rgr"]
+
+[node name="Menu" type="Node2D"]
+script = ExtResource("1_15rgr")
+
+[node name="Single Player" type="Button" parent="."]
+offset_left = 411.0
+offset_top = 367.0
+offset_right = 518.0
+offset_bottom = 398.0
+text = "Multi Player"
+
+[node name="Multi Player" type="Button" parent="."]
+offset_left = 100.0
+offset_top = 361.0
+offset_right = 207.0
+offset_bottom = 392.0
+text = "Single Player"
+
+[node name="PongText" type="Label" parent="."]
+offset_left = 284.0
+offset_top = 136.0
+offset_right = 324.0
+offset_bottom = 159.0
+text = "Pong"
+
+[connection signal="pressed" from="Single Player" to="." method="_on_single_player_pressed"]
+[connection signal="pressed" from="Multi Player" to="." method="_on_multi_player_pressed"]
